@@ -1,0 +1,157 @@
+@using System.Globalization
+@model FrontEnd.ViewModels.OrderFormViewModel
+@{
+    ViewData["Title"] = Model.PageTitle;
+
+    var idCulture = new CultureInfo("id-ID");
+
+    // Mode Create dan Edit memakai view yang sama (FSD bagian 4.3);
+    // hanya judul, Order Number, dan action tujuan yang berbeda.
+    var formAction = Model.IsEditMode ? "Edit" : "Create";
+}
+
+<form method="post" asp-action="@formAction" id="orderForm">
+    @Html.AntiForgeryToken()
+
+    @if (Model.IsEditMode)
+    {
+        <input type="hidden" asp-for="SalesSoId" />
+
+        @* Order Number tidak dapat diubah pada mode Edit, tetapi nilainya
+           tetap dikirim ke service lewat hidden input. *@
+        <input type="hidden" asp-for="SoNo" />
+    }
+
+    <div class="so-card mb-4">
+        <div class="so-card-header">
+            <h1 class="so-card-title">@Model.PageTitle</h1>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-success" id="saveOrderButton">&#128190; Save Order</button>
+                <a class="btn btn-secondary" asp-action="Index">&#10006; Close</a>
+            </div>
+        </div>
+
+        <div class="so-card-body">
+            @* Pesan error dari service (validasi gagal / order tidak ditemukan). *@
+            @if (Model.ErrorMessage is not null)
+            {
+                <div class="alert alert-danger">
+                    <strong>@Model.ErrorMessage</strong>
+                    @if (Model.ErrorDetails.Count > 0)
+                    {
+                        <ul class="mb-0 mt-2">
+                            @foreach (var detail in Model.ErrorDetails)
+                            {
+                                <li>@detail</li>
+                            }
+                        </ul>
+                    }
+                </div>
+            }
+
+            @* -------------------- Bagian header order -------------------- *@
+            <div class="so-section-title">Order Header</div>
+
+            <div class="row g-3">
+                <div class="col-12 col-md-6">
+                    <label class="form-label" asp-for="SoNo">
+                        Order Number <span class="text-danger">*</span>
+                    </label>
+
+                    @if (Model.IsEditMode)
+                    {
+                        <input type="text" class="form-control" value="@Model.SoNo" readonly disabled />
+                        <div class="form-text">Order Number tidak dapat diubah.</div>
+                    }
+                    else
+                    {
+                        <input type="text" class="form-control" asp-for="SoNo"
+                               maxlength="20" placeholder="Contoh: SO-2026-001" />
+                    }
+                </div>
+
+                <div class="col-12 col-md-6">
+                    <label class="form-label" asp-for="OrderDate">
+                        Order Date <span class="text-danger">*</span>
+                    </label>
+                    <input type="date" class="form-control" asp-for="OrderDate"
+                           value="@Model.OrderDate?.ToString("yyyy-MM-dd")" />
+                </div>
+
+                <div class="col-12 col-md-6">
+                    <label class="form-label" asp-for="CustomerId">
+                        Customer <span class="text-danger">*</span>
+                    </label>
+                    <select class="form-select" asp-for="CustomerId">
+                        <option value="">-- Pilih Pelanggan --</option>
+                        @foreach (var customer in Model.Customers)
+                        {
+                            <option value="@customer.CustomerId"
+                                    selected="@(customer.CustomerId == Model.CustomerId)">
+                                @customer.CustomerName
+                            </option>
+                        }
+                    </select>
+                    <div class="form-text">Data pelanggan diambil dari Customer Service.</div>
+                </div>
+
+                <div class="col-12 col-md-6">
+                    <label class="form-label" asp-for="Address">Address</label>
+                    <input type="text" class="form-control" asp-for="Address"
+                           maxlength="500" placeholder="Opsional" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* -------------------- Bagian detail item -------------------- *@
+    <div class="so-card">
+        <div class="so-card-header">
+            <div class="so-section-title mb-0">Order Detail (Items)</div>
+            <button type="button" class="btn btn-outline-primary btn-sm" id="addItemButton">+ Add Item</button>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-bordered mb-0" id="itemsTable">
+                <thead>
+                    <tr>
+                        <th class="so-col-num">#</th>
+                        <th>Item Name <span class="text-danger">*</span></th>
+                        <th class="so-col-qty">QTY <span class="text-danger">*</span></th>
+                        <th class="so-col-price">Price <span class="text-danger">*</span></th>
+                        <th class="so-col-total">Total</th>
+                        <th class="so-col-action">Action</th>
+                    </tr>
+                </thead>
+
+                @* Isi tabel dirender oleh order-form.js dari data awal di bawah. *@
+                <tbody id="itemsBody"></tbody>
+            </table>
+        </div>
+
+        <div class="so-grand-total">
+            Grand Total &nbsp;|&nbsp; <span id="grandTotalDisplay">@Model.GrandTotal.ToString("N2", idCulture)</span>
+        </div>
+    </div>
+
+    @* Wadah hidden input untuk item yang akan dikirim saat Save Order.
+       Diisi ulang oleh JavaScript setiap kali daftar item berubah. *@
+    <div id="itemsHiddenInputs"></div>
+</form>
+
+@section Scripts {
+    @* Data awal item dan URL endpoint kalkulasi diserahkan ke JavaScript
+       lewat elemen JSON, bukan ditulis inline di dalam script. *@
+    <script id="initialItemsData" type="application/json">
+        @Html.Raw(Json.Serialize(Model.Items))
+    </script>
+
+    <script id="orderFormConfig" type="application/json">
+        {
+            "calculateUrl": "@Url.Action("CalculateItems", "Orders")"
+        }
+    </script>
+
+    <script src="~/js/order-form.js" asp-append-version="true"></script>
+}

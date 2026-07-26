@@ -1,0 +1,50 @@
+@*
+    Layout utama aplikasi.
+    Memakai Bootstrap 5 yang sudah tersedia di wwwroot/lib (template bawaan
+    project MVC), jadi tidak perlu koneksi internet saat dijalankan.
+*@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Sales Order Management</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <header class="app-navbar">
+        <div class="container-fluid px-4 py-3 d-flex align-items-center">
+            <a class="app-brand" asp-controller="Orders" asp-action="Index">
+                Sales Order Management
+            </a>
+            <span class="app-brand-sub d-none d-md-inline">Technical Test &mdash; .NET Developer</span>
+        </div>
+    </header>
+
+    <main class="container-fluid px-4 py-4">
+        @* Notifikasi sukses/gagal dari aksi sebelumnya (TempData). *@
+        @if (TempData["SuccessMessage"] is string successMessage)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Berhasil.</strong> @successMessage
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
+            </div>
+        }
+
+        @if (TempData["ErrorMessage"] is string errorMessage)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Gagal.</strong> @errorMessage
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
+            </div>
+        }
+
+        @RenderBody()
+    </main>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

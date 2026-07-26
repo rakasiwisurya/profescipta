@@ -1,0 +1,178 @@
+/* ------------------------------------------------------------------
+   Gaya tampilan Sales Order Management System.
+   Warna dasar mengikuti nuansa biru tua pada desain referensi.
+   ------------------------------------------------------------------ */
+
+:root {
+    --so-navy: #1f3864;
+    --so-navy-dark: #172a4a;
+    --so-border: #dee2e6;
+    --so-row-edit: #fff9e6;
+}
+
+body {
+    background-color: #f4f6f9;
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    font-size: 0.925rem;
+    color: #22272f;
+}
+
+/* ---------------- Header ---------------- */
+.app-navbar {
+    background-color: var(--so-navy);
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, .15);
+}
+
+.app-brand {
+    color: #fff;
+    font-size: 1.15rem;
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: .2px;
+}
+
+.app-brand:hover {
+    color: #dbe4f5;
+}
+
+.app-brand-sub {
+    margin-left: 1rem;
+    padding-left: 1rem;
+    border-left: 1px solid rgba(255, 255, 255, .3);
+    font-size: .85rem;
+    color: #c9d5ec;
+}
+
+/* ---------------- Kartu / panel ---------------- */
+.so-card {
+    background: #fff;
+    border: 1px solid var(--so-border);
+    border-radius: .5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .05);
+}
+
+.so-card-header {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--so-border);
+}
+
+.so-card-title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--so-navy);
+}
+
+.so-card-body {
+    padding: 1.25rem;
+}
+
+.so-section-title {
+    font-size: .8rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: #6c757d;
+    margin-bottom: .75rem;
+}
+
+/* ---------------- Panel filter pencarian ---------------- */
+.so-filter {
+    background: #f8f9fb;
+    border: 1px solid var(--so-border);
+    border-radius: .375rem;
+    padding: .875rem 1rem;
+}
+
+/* ---------------- Tabel ---------------- */
+.table > thead {
+    background-color: var(--so-navy);
+    color: #fff;
+}
+
+.table > thead th {
+    font-size: .8rem;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+    font-weight: 600;
+    vertical-align: middle;
+}
+
+.table > tbody td {
+    vertical-align: middle;
+}
+
+.so-col-num {
+    width: 56px;
+    text-align: center;
+}
+
+.so-col-action {
+    width: 110px;
+    text-align: center;
+}
+
+.so-col-qty {
+    width: 120px;
+}
+
+.so-col-price,
+.so-col-total {
+    width: 180px;
+}
+
+.text-money {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Baris item yang sedang dalam mode input (sesuai desain: baris kuning). */
+tr.so-row-editing {
+    background-color: var(--so-row-edit) !important;
+}
+
+/* ---------------- Grand total ---------------- */
+.so-grand-total {
+    background: #eef2f9;
+    border-top: 2px solid var(--so-navy);
+    padding: .875rem 1.25rem;
+    text-align: right;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--so-navy);
+}
+
+/* ---------------- Tombol aksi baris ---------------- */
+.btn-icon {
+    border: none;
+    background: transparent;
+    padding: .25rem .4rem;
+    line-height: 1;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.btn-icon:hover {
+    border-radius: .25rem;
+    background-color: rgba(0, 0, 0, .06);
+}
+
+/* ---------------- Pesan error inline pada baris item ---------------- */
+.so-row-errors {
+    margin: .35rem 0 0;
+    padding-left: 1.1rem;
+    color: #dc3545;
+    font-size: .8rem;
+}
+
+.so-empty {
+    padding: 2.5rem 1rem;
+    text-align: center;
+    color: #6c757d;
+}
