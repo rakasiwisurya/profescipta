@@ -41,7 +41,10 @@ BEGIN
         SALES_SO_ID       AS SalesSoId,
         ITEM_NAME         AS ItemName,
         QUANTITY          AS Quantity,
-        PRICE             AS Price,
+        /* PRICE disimpan FLOAT sesuai FSD; dikonversi ke DECIMAL(18,2)
+           di sini supaya nilai uang yang keluar dari API sudah rapi
+           dan bebas galat floating point. */
+        CONVERT(DECIMAL(18, 2), PRICE)            AS Price,
         CONVERT(DECIMAL(18, 2), QUANTITY * PRICE) AS Total
     FROM dbo.SALES_SO_LITEM
     WHERE SALES_SO_ID = @SalesSoId

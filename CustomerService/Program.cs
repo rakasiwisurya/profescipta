@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using CustomerService.Data;
 using CustomerService.Middleware;
 using CustomerService.Repositories;
@@ -8,7 +9,12 @@ var builder = WebApplication.CreateBuilder(args);
 // ---------------------------------------------------------------------
 // Registrasi dependency (Controller -> Service -> Repository -> DB)
 // ---------------------------------------------------------------------
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        // Properti null tidak perlu ikut dikirim di respons JSON.
+        options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+    });
 
 // Singleton: factory hanya menyimpan connection string, tidak menyimpan
 // koneksi terbuka, jadi aman dipakai bersama antar request.
