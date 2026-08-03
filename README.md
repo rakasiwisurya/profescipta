@@ -24,11 +24,11 @@ Technical test .NET Developer — Sales Order Management System berbasis
                                                 └────────────────────────┘
 ```
 
-| Komponen               | Port | Tanggung jawab                                                                 | Tabel                          |
-| ---------------------- | ---- | ------------------------------------------------------------------------------ | ------------------------------ |
-| **CustomerService**    | 5001 | Data master pelanggan untuk dropdown Customer                                   | `COM_CUSTOMER`                 |
-| **SalesOrderService**  | 5002 | CRUD Sales Order + item, pencarian, validasi, kalkulasi total, ekspor Excel      | `SALES_SO`, `SALES_SO_LITEM`   |
-| **FrontEnd**           | 5000 | Lapisan tampilan; memanggil kedua service via HTTP                               | — (tidak mengakses database)   |
+| Komponen              | Port | Tanggung jawab                                                              | Tabel                        |
+| --------------------- | ---- | --------------------------------------------------------------------------- | ---------------------------- |
+| **CustomerService**   | 5001 | Data master pelanggan untuk dropdown Customer                               | `COM_CUSTOMER`               |
+| **SalesOrderService** | 5002 | CRUD Sales Order + item, pencarian, validasi, kalkulasi total, ekspor Excel | `SALES_SO`, `SALES_SO_LITEM` |
+| **FrontEnd**          | 5000 | Lapisan tampilan; memanggil kedua service via HTTP                          | — (tidak mengakses database) |
 
 Catatan penting:
 
@@ -43,11 +43,11 @@ Catatan penting:
 
 ## 2. Prasyarat
 
-| Kebutuhan          | Versi yang dipakai saat pengembangan                       |
-| ------------------ | ---------------------------------------------------------- |
-| .NET SDK           | 8.0 (`dotnet --version` ≥ 8.0)                             |
-| SQL Server         | SQL Server Express (instance `localhost\SQLEXPRESS`)       |
-| Sistem operasi     | Windows (Windows Authentication dipakai secara default)    |
+| Kebutuhan      | Versi yang dipakai saat pengembangan                    |
+| -------------- | ------------------------------------------------------- |
+| .NET SDK       | 8.0 (`dotnet --version` ≥ 8.0)                          |
+| SQL Server     | SQL Server Express (instance `localhost\SQLEXPRESS`)    |
+| Sistem operasi | Windows (Windows Authentication dipakai secara default) |
 
 Cek .NET SDK:
 
@@ -85,20 +85,20 @@ Opsi tambahan:
 
 Jalankan berurutan:
 
-| Urutan | File                                      | Isi                                                        |
-| ------ | ----------------------------------------- | ---------------------------------------------------------- |
-| 1      | `schema.sql`                              | `CREATE DATABASE SalesOrderDb` + 3 tabel + 5 master pelanggan |
-| 2      | `vw_SalesOrderSummary.sql`                | View: header + nama pelanggan + `GRAND_TOTAL`               |
-| 3      | `usp_Customer_GetAll.sql`                 | SP daftar pelanggan                                         |
-| 4      | `usp_SalesOrder_Search.sql`               | SP pencarian order (keyword + tanggal)                      |
-| 5      | `usp_SalesOrder_GetById.sql`              | SP detail order (2 result set: header & item)               |
-| 6      | `usp_SalesOrder_Insert.sql`               | SP simpan header, mengembalikan ID baru                     |
-| 7      | `usp_SalesOrder_Update.sql`               | SP update header                                            |
-| 8      | `usp_SalesOrder_Delete.sql`               | SP hapus order + seluruh item                               |
-| 9      | `usp_SalesOrder_SoNoExists.sql`           | SP cek duplikat `SO_NO`                                     |
-| 10     | `usp_SalesOrderItem_Insert.sql`           | SP simpan satu item                                         |
-| 11     | `usp_SalesOrderItem_DeleteByOrder.sql`    | SP hapus semua item milik satu order                        |
-| 12     | `sample-data-orders.sql` *(opsional)*     | 3 order contoh + 5 item                                     |
+| Urutan | File                                   | Isi                                                           |
+| ------ | -------------------------------------- | ------------------------------------------------------------- |
+| 1      | `schema.sql`                           | `CREATE DATABASE SalesOrderDb` + 3 tabel + 5 master pelanggan |
+| 2      | `vw_SalesOrderSummary.sql`             | View: header + nama pelanggan + `GRAND_TOTAL`                 |
+| 3      | `usp_Customer_GetAll.sql`              | SP daftar pelanggan                                           |
+| 4      | `usp_SalesOrder_Search.sql`            | SP pencarian order (keyword + tanggal)                        |
+| 5      | `usp_SalesOrder_GetById.sql`           | SP detail order (2 result set: header & item)                 |
+| 6      | `usp_SalesOrder_Insert.sql`            | SP simpan header, mengembalikan ID baru                       |
+| 7      | `usp_SalesOrder_Update.sql`            | SP update header                                              |
+| 8      | `usp_SalesOrder_Delete.sql`            | SP hapus order + seluruh item                                 |
+| 9      | `usp_SalesOrder_SoNoExists.sql`        | SP cek duplikat `SO_NO`                                       |
+| 10     | `usp_SalesOrderItem_Insert.sql`        | SP simpan satu item                                           |
+| 11     | `usp_SalesOrderItem_DeleteByOrder.sql` | SP hapus semua item milik satu order                          |
+| 12     | `sample-data-orders.sql` _(opsional)_  | 3 order contoh + 5 item                                       |
 
 Contoh dengan sqlcmd:
 
@@ -156,14 +156,14 @@ dotnet run --project FrontEnd\FrontEnd.csproj
 
 ### 4.3 Alamat penting
 
-| Alamat                             | Isi                                        |
-| ---------------------------------- | ------------------------------------------ |
-| <http://localhost:5000>            | **UI aplikasi** (langsung ke Order List)   |
-| <http://localhost:5000/Orders/Create> | Form tambah order                       |
-| <http://localhost:5001/swagger>    | Swagger Customer Service                   |
-| <http://localhost:5002/swagger>    | Swagger Sales Order Service                |
-| <http://localhost:5001/health>     | Cek Customer Service hidup                 |
-| <http://localhost:5002/health>     | Cek Sales Order Service hidup              |
+| Alamat                                | Isi                                      |
+| ------------------------------------- | ---------------------------------------- |
+| <http://localhost:5000>               | **UI aplikasi** (langsung ke Order List) |
+| <http://localhost:5000/Orders/Create> | Form tambah order                        |
+| <http://localhost:5001/swagger>       | Swagger Customer Service                 |
+| <http://localhost:5002/swagger>       | Swagger Sales Order Service              |
+| <http://localhost:5001/health>        | Cek Customer Service hidup               |
+| <http://localhost:5002/health>        | Cek Sales Order Service hidup            |
 
 ### 4.4 Build / publish
 
@@ -189,15 +189,15 @@ dotnet publish FrontEnd\FrontEnd.csproj                 -c Release -o publish\Fr
 
 ### 5.2 Sales Order Service (port 5002)
 
-| Method | Endpoint                                        | Auth        | Keterangan                                            |
-| ------ | ----------------------------------------------- | ----------- | ----------------------------------------------------- |
-| GET    | `/api/orders?keyword=&orderDate=YYYY-MM-DD`     | —           | Daftar order, kedua filter opsional                    |
-| GET    | `/api/orders/{id}`                              | —           | Detail order + seluruh item                            |
-| POST   | `/api/orders`                                   | —           | Buat order baru → `201` + `salesSoId`                  |
-| PUT    | `/api/orders/{id}`                              | —           | Update order; seluruh item lama diganti item baru      |
-| DELETE | `/api/orders/{id}`                              | **API Key** | Hapus order + seluruh item (satu transaksi)            |
-| GET    | `/api/orders/export?keyword=&orderDate=`        | **API Key** | Unduh `.xlsx` sesuai filter yang aktif                 |
-| POST   | `/api/orders/calculate`                         | —           | *(tambahan)* hitung TOTAL per baris + Grand Total      |
+| Method | Endpoint                                    | Auth        | Keterangan                                        |
+| ------ | ------------------------------------------- | ----------- | ------------------------------------------------- |
+| GET    | `/api/orders?keyword=&orderDate=YYYY-MM-DD` | —           | Daftar order, kedua filter opsional               |
+| GET    | `/api/orders/{id}`                          | —           | Detail order + seluruh item                       |
+| POST   | `/api/orders`                               | —           | Buat order baru → `201` + `salesSoId`             |
+| PUT    | `/api/orders/{id}`                          | —           | Update order; seluruh item lama diganti item baru |
+| DELETE | `/api/orders/{id}`                          | **API Key** | Hapus order + seluruh item (satu transaksi)       |
+| GET    | `/api/orders/export?keyword=&orderDate=`    | **API Key** | Unduh `.xlsx` sesuai filter yang aktif            |
+| POST   | `/api/orders/calculate`                     | —           | _(tambahan)_ hitung TOTAL per baris + Grand Total |
 
 Contoh body `POST /api/orders`:
 
@@ -220,7 +220,10 @@ Format error seragam untuk semua service dan semua status code:
 {
   "success": false,
   "message": "Data order tidak valid",
-  "errors": ["Order Number sudah digunakan", "Item baris 1: QTY harus berupa angka lebih dari 0"]
+  "errors": [
+    "Order Number sudah digunakan",
+    "Item baris 1: QTY harus berupa angka lebih dari 0"
+  ]
 }
 ```
 
@@ -342,12 +345,12 @@ profescipta/
 
 ## 9. Troubleshooting
 
-| Gejala                                                            | Penyebab & solusi                                                                                                              |
-| ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| UI menampilkan "Tidak dapat menghubungi Sales Order Service"      | Service port 5002 belum jalan. Cek <http://localhost:5002/health>.                                                              |
-| Dropdown Customer kosong                                          | Customer Service (5001) belum jalan, atau tabel `COM_CUSTOMER` kosong.                                                          |
-| Error "Cannot open database SalesOrderDb"                         | Script database belum dijalankan → jalankan `Database\install-database.ps1`.                                                     |
-| Error login / "A network-related or instance-specific error"      | Nama instance berbeda. Sesuaikan `Server=` di `appsettings.json` (mis. `localhost`, `.\SQLEXPRESS`, `(localdb)\MSSQLLocalDB`).   |
-| Error sertifikat SSL saat konek SQL                               | Pastikan connection string memuat `TrustServerCertificate=True`.                                                                 |
-| Port sudah dipakai                                                | Ubah `Urls` di `appsettings.json` service terkait, dan sesuaikan `Services:*BaseUrl` di `FrontEnd/appsettings.json`.             |
-| `dotnet build` gagal karena file terkunci                         | Service masih berjalan. Hentikan dulu proses `CustomerService`/`SalesOrderService`/`FrontEnd`.                                   |
+| Gejala                                                       | Penyebab & solusi                                                                                                              |
+| ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
+| UI menampilkan "Tidak dapat menghubungi Sales Order Service" | Service port 5002 belum jalan. Cek <http://localhost:5002/health>.                                                             |
+| Dropdown Customer kosong                                     | Customer Service (5001) belum jalan, atau tabel `COM_CUSTOMER` kosong.                                                         |
+| Error "Cannot open database SalesOrderDb"                    | Script database belum dijalankan → jalankan `Database\install-database.ps1`.                                                   |
+| Error login / "A network-related or instance-specific error" | Nama instance berbeda. Sesuaikan `Server=` di `appsettings.json` (mis. `localhost`, `.\SQLEXPRESS`, `(localdb)\MSSQLLocalDB`). |
+| Error sertifikat SSL saat konek SQL                          | Pastikan connection string memuat `TrustServerCertificate=True`.                                                               |
+| Port sudah dipakai                                           | Ubah `Urls` di `appsettings.json` service terkait, dan sesuaikan `Services:*BaseUrl` di `FrontEnd/appsettings.json`.           |
+| `dotnet build` gagal karena file terkunci                    | Service masih berjalan. Hentikan dulu proses `CustomerService`/`SalesOrderService`/`FrontEnd`.                                 |
